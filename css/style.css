@@ -1,0 +1,228 @@
+body {
+    margin:0;
+}
+
+.bodycontent {
+    overflow: hidden;
+  }
+  
+  /* container class */
+  .container {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 1240px;
+  }
+  
+  /* Globe page style */
+  
+  /* Style du contenu texte à gauche */
+
+
+  
+  h3 {
+    margin:0;
+    padding:4px 8px;
+  }
+  .filters {
+    padding:32px;
+    display:flex;
+    gap:8px;
+    height: fit-content;
+  }
+  .filters button {
+    color: #0071B9;
+    padding: 8px 12px;
+    border-radius: 8px;
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .filters button:hover {
+    background: var(--primary-100);
+    color:var(--primary);
+  }
+  
+  .filters .active {
+    color: #fff;
+    background:#0071B9;
+  }
+  
+  section {
+    height:100vh;
+    overflow: hidden;
+    position:relative;
+    display: flex;
+    align-items: center;
+    background-color: #F5F5F5;
+  }
+  
+  /* Globe */
+  #globe {
+    position: relative;
+    top:0;
+    right:0;	
+  }
+  
+  /* Card Design */
+  .card {
+    position: relative;
+    user-select: initial !important;
+  }
+  .card-image {
+    width:100%;
+    height:100px;
+    object-fit:cover;
+    border-radius:12px 12px 0 0;
+  }
+  .card-body {
+    display: none;
+    background:white;
+    width:220px;
+    height:fit-content;
+    text-align:left;
+    box-shadow: rgba(50, 50, 93, 0.55) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    border-radius:12px;
+    overflow: hidden;
+    pointer-events: all;
+    visibility: hidden;
+    opacity: 0;
+    transition: 1s;
+  }
+  .card-body h3, .card-body p {
+    margin:0;
+  }
+  .card-body p, .card-body h3, .card-infos {
+    padding:0px 12px;
+  }
+  .card-body h3 {
+    padding-top:8px;
+    font-size:14px;
+    line-height: 1.6;
+  }
+  .card-body p {
+    font-size:12px;
+    margin:4px 0 8px 0;
+  }
+  .card-factories {
+    padding-bottom:8px;
+    display: flex;
+    gap: 4px;
+    font-size:12px;
+    padding-left:12px;
+    color:#0071B9;
+  }
+  .card-factories:before {
+    content:"";
+    width:21px;
+    height:14px;
+    background-image: url('../icons/factory.svg');
+  }
+  .card-cta {
+    background: #E8F6FF;
+    color: #0071B9;
+    display:block;
+    text-decoration: none;
+    padding:12px 8px;
+    text-align:center;
+  }
+  .card-cta:hover {
+    cursor:pointer;
+    background-color: #0071B9;
+    color:white;
+    transition: background .2s;
+  }
+  .close-card {
+    position: absolute;
+    top:8px;
+    right:8px;
+    width:24px;
+    height:24px;
+    background-image: url('../icons/close.svg');
+    background-size:cover;
+    cursor:pointer;
+  }
+  .marker {
+    width:12px;
+    height:12px;
+    cursor: pointer;
+    pointer-events: all;
+    transition: .3s;
+    transition-timing-function: cubic-bezier(.80, 0.14, 0.27, 0.99);
+  }
+  .marker:hover {
+    transform:scale(1.8);
+    transition:transform .2s;
+  }
+  .current-marker {
+    transform:scale(2.2);
+    position: relative;
+    animation: pulse 2s infinite;
+    border-radius: 50%;
+  }
+  
+  .card.highzindx {
+    z-index: 9999 !important;
+  }
+  
+  .is-open {
+    opacity: 1;
+    visibility: visible;
+    z-index: 9999 !important;
+    display: block;
+    position: absolute;
+    bottom: 16px;
+    left: -100px;
+  }
+  
+  @keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 113, 185, 0.7);
+   }
+    70% {
+        box-shadow: 0 0 0 10px rgba(0, 113, 185, 0);
+   }
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 113, 185, 0);
+   }
+  }
+  
+  @media (min-width:992px) and (max-width:1240px) {
+    #globe {
+      right:-20%;	
+    }
+  }
+  
+  /* General Media Queries */
+  @media (max-width:992px) {
+    .content {
+        position:initial;
+        width:100%;
+   }
+    #globe {
+        top:auto;
+        top:20vh;
+        right: -80px;
+   }
+  
+    .filters {
+        font-size: 24px;
+   }
+    .content {
+        width:80% !important;
+        top:48px !important;
+   }
+    p {
+        font-size:24px;
+   }
+    h1 {
+        font-size:48px;
+   }
+    .marker {
+        transform: scale(2);
+   }
+    .is-open {
+        transform: scale(2);
+        bottom:130px !important;
+   }
+  }
+  

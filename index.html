@@ -1,0 +1,183 @@
+<head>
+  
+  <link rel="stylesheet" href="css/style.css">
+  <script src="//unpkg.com/globe.gl"></script>
+</head>
+
+<body>
+  <section>
+    <div class="filters">
+      <button id="eu"> Europe </button>
+      <button id="america"> America </button>
+      <button id="asia"> Asia </button>
+      <button id="africa"> Africa </button>
+    </div>
+    <div id="globe-section"></div>
+    
+  </section>
+
+<script src="
+https://cdn.jsdelivr.net/npm/dat.gui@0.7.9/build/dat.gui.min.js
+"></script>
+<script>
+  const gui = new dat.GUI(); 
+
+  const markerSvg = `
+  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="6" cy="6" r="6" fill="#0071B9"/>
+  </svg>
+`;
+  // Parse data 
+  const fetchCities = () => {
+    return fetch("js/cities.json");
+  };
+
+  // async function createGlobe(){
+  //   try {
+  //     const res = await fetchCities();
+  //     const data = await res.json();
+    
+  //   }catch (err) {
+  //   console.log(err);
+  // }} 
+  
+  async function createGlobe() {
+    const res = await fetchCities();
+    const data = await res.json();
+  
+    const globe = new Globe({antialias: true})
+      .globeImageUrl('img/map.png')
+      .htmlElementsData(data.cities)
+      .backgroundColor('#F5F5F5')
+      .atmosphereColor('#D9D5D7')
+      .htmlElement(city => {
+        const card = createCard(city, markerSvg);
+        return card;
+      })
+    (document.getElementById('globe-section'));
+    
+
+    // Function to create cards called in createGlobe() 
+    const createCard = (city, markerSvg) => {
+      const card = document.createElement("div");
+      card.className = "card";
+
+      // Style marker
+      const marker = document.createElement('div');
+      marker.classList.add('marker');
+      marker.innerHTML = markerSvg;
+      
+    // Open and close cards
+    marker.addEventListener('click', () => { 
+        cleanAll();
+        marker.classList.add('current-marker');
+
+        const markerContent = marker.parentNode.querySelector('.card-body');
+        markerContent.classList.add('is-open');
+
+        const card = marker.parentNode;
+        card.classList.add('highzindx');
+    })
+    card.appendChild(marker);
+
+      // Get image 
+      const cardImage = document.createElement("img");
+      cardImage.className = "card-image";
+      cardImage.src = city.img;
+      card.appendChild(cardImage);
+
+      // Body
+      const cardBody = document.createElement("div");
+      cardBody.className = "card-body";
+      card.appendChild(cardBody);
+
+      // Close card
+      const closeCard = document.createElement("div");
+      closeCard.className = "close-card";
+      closeCard.onclick = () => {
+        cleanAll();
+      };
+      cardBody.appendChild(closeCard);
+
+      // Name of the filiales
+      const title = document.createElement("h3");
+      title.innerText = city.name;
+      title.className = "card-title";
+      cardBody.appendChild(title);
+
+      // Contact
+      const contact = document.createElement("p");
+      contact.innerText = city.contact;
+      cardBody.appendChild(contact);
+
+      // Factories
+      const cardInfos = document.createElement("span");
+      cardInfos.className = "card-factories";
+      // Handle pluralize or hide if no factory
+      if (city.units === 0) {
+        cardInfos.style.display = "none";
+      } else if (city.units === 1) {
+        cardInfos.innerText = `${city.units} unité de productions`;
+      } else {
+        cardInfos.innerText = `${city.units} unités de productions`;
+      }
+
+      // Add link 
+      let cta = document.createElement('a');
+      cta.innerText = "Visiter le site web";
+      cta.href = city.website;
+      cta.target = '_blank';
+      cta.classList.add('card-cta');
+      
+      // Add all that shit to card
+      cardBody.append(cardImage, title, contact, cardInfos, cta, closeCard);
+      card.append(cardBody);
+      
+      return card;
+    }
+ 
+    globe.controls().autoRotate = true;
+    globe.controls().autoRotateSpeed = 1.3;
+    globe.controls().minPolarAngle = 1.2;
+    globe.controls().maxPolarAngle = 2;
+    globe.controls().enableZoom = false;
+    
+    // Filters
+    document.getElementById('eu').addEventListener('click', (e) => {
+      console.log(globe.pointOfView());
+      globe.pointOfView({lat:15, lng:20, atlitude: 2.5}, 1000);
+    })
+
+    document.getElementById('america').addEventListener('click', (e) => {
+      console.log(globe.pointOfView());
+      globe.pointOfView({lat:0, lng:-80, atlitude: 2.5}, 1000);
+    })
+
+    document.getElementById('africa').addEventListener('click', (e) => {
+      console.log(globe.pointOfView());
+      globe.pointOfView({lat:-15, lng:20, atlitude: 2.5}, 1000);
+    })
+
+    document.getElementById('asia').addEventListener('click', (e) => {
+      console.log(globe.pointOfView());
+      globe.pointOfView({lat:0, lng:80, atlitude: 2.5}, 1000);
+    })
+
+    window.addEventListener('resize', (event) => {
+      globe.width([event.target.innerWidth])
+     globe.height([event.target.innerHeight])
+    });
+  }
+
+  createGlobe()
+    function cleanAll() {
+    const markers = document.querySelectorAll('*');
+    markers.forEach((element) => {
+        element.classList.remove('current-marker');
+        element.classList.remove('is-open');
+        element.classList.remove('highzindx');
+    })
+  }
+  
+</script>
+</body>
