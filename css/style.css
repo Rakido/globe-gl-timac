@@ -1,24 +1,21 @@
 body {
-    margin:0;
+  margin:0;
 }
 
 .bodycontent {
-    overflow: hidden;
-  }
+  overflow: hidden;
+}
   
-  /* container class */
-  .container {
-    margin-right: auto;
-    margin-left: auto;
-    max-width: 1240px;
-  }
+/* container class */
+.container {
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 1240px;
+}
   
   /* Globe page style */
   
   /* Style du contenu texte à gauche */
-
-
-  
   h3 {
     margin:0;
     padding:4px 8px;
@@ -198,13 +195,23 @@ body {
         position:initial;
         width:100%;
    }
+   #globe-section {
+    position:absolute;
+   }
     #globe {
         top:auto;
         top:20vh;
         right: -80px;
    }
-  
-    .filters {
+   .filters {
+    z-index: 99;
+    position: absolute;
+    top: 32px;
+   }
+   .card-body {
+    transform: scale(2);
+   }
+    .filters button{
         font-size: 24px;
    }
     .content {
@@ -217,11 +224,13 @@ body {
     h1 {
         font-size:48px;
    }
-    .marker {
-        transform: scale(2);
+   .marker {
+    transform:scale(4);
    }
+   .current-marker {
+    transform:scale(5) !important;
+  }
     .is-open {
-        transform: scale(2);
         bottom:130px !important;
    }
   }
