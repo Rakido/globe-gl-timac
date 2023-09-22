@@ -1,18 +1,31 @@
+// Define marker SVG
 const markerSvg = `
 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="6" cy="6" r="6" fill="#0071B9"/>
 </svg>
 `;
 
-// Parse data 
+function cleanAll() {
+	const markers = document.querySelectorAll('*');
+	markers.forEach((element) => {
+		element.classList.remove('current-marker');
+		element.classList.remove('is-open');
+		element.classList.remove('highindex');
+	})
+}
+
+// Function to fetch city data
 const fetchCities = () => {
 	return fetch("js/cities.json");
 };
 
+// Main function to create the globe
 async function createGlobe() {
+	// Fetch city data
 	const res = await fetchCities();
 	const data = await res.json();
 
+	// Initialize the Globe
 	const globe = new Globe({
 			antialias: true
 		})
@@ -26,12 +39,12 @@ async function createGlobe() {
 		})
 		(document.getElementById('globe-section'));
 
-	// Function to create cards called in createGlobe() 
+	// Function to create a card for a city
 	const createCard = (city, markerSvg) => {
 		const card = document.createElement("div");
 		card.className = "card";
 
-		// Style marker
+		// Create marker
 		const marker = document.createElement('div');
 		marker.classList.add('marker');
 		marker.innerHTML = markerSvg;
@@ -47,18 +60,18 @@ async function createGlobe() {
 		})
 		card.appendChild(marker);
 
-		// Get image 
+		// Create and add image
 		const cardImage = document.createElement("img");
 		cardImage.className = "card-image";
 		cardImage.src = city.img;
 		card.appendChild(cardImage);
 
-		// Body
+		// Create card body
 		const cardBody = document.createElement("div");
 		cardBody.className = "card-body";
 		card.appendChild(cardBody);
 
-		// Close card
+		// Handle closing card
 		const closeCard = document.createElement("div");
 		closeCard.className = "close-card";
 		closeCard.onclick = () => {
@@ -66,18 +79,18 @@ async function createGlobe() {
 		};
 		cardBody.appendChild(closeCard);
 
-		// Name of the filiales
+		// Name of each site
 		const title = document.createElement("h3");
 		title.innerText = city.name;
 		title.className = "card-title";
 		cardBody.appendChild(title);
 
-		// Contact
+		// Contact of each site
 		const contact = document.createElement("p");
 		contact.innerText = city.contact;
 		cardBody.appendChild(contact);
 
-		// Factories
+		// Add factories
 		const cardInfos = document.createElement("span");
 		cardInfos.className = "card-factories";
 
@@ -90,7 +103,7 @@ async function createGlobe() {
 			cardInfos.innerText = `${city.units} unités de productions`;
 		}
 
-		// Add link 
+		// Add link to website 
 		let cta = document.createElement('a');
 		cta.innerText = "Visiter le site web";
 		cta.href = city.website;
@@ -104,16 +117,16 @@ async function createGlobe() {
 		return card;
 	}
 
-    // setup globe controls
+  // setup globe controls
 	globe.controls().autoRotate = true;
-    globe.controls().autoRotateSpeed = -1.3;
 	globe.controls().minPolarAngle = 1;
 	globe.controls().maxPolarAngle = 2;
 	globe.controls().enableZoom = false;
+	globe.controls().autoRotate = false;
 
-    if ("ontouchstart" in document.documentElement){
-        globe.controls().autoRotate = false;
-    }
+	if ("ontouchstart" in document.documentElement){
+			globe.controls().autoRotate = false;
+	}
 
 	//set position default of the globe : Zone EU
 	globe.pointOfView({
@@ -122,7 +135,7 @@ async function createGlobe() {
 		altitude: 2
 	}, 1500);
 
-	// Filters
+	// Scope camera To EU
 	document.getElementById('globefilters').getElementsByClassName('eu')[0].addEventListener('click', (e) => {
 		globe.pointOfView({
 			lat: 40,
@@ -131,6 +144,7 @@ async function createGlobe() {
 		}, 1000);
 	})
 
+	// Scope camera  To US
 	document.getElementById('globefilters').getElementsByClassName('us')[0].addEventListener('click', (e) => {
 		globe.pointOfView({
 			lat: 0,
@@ -139,6 +153,7 @@ async function createGlobe() {
 		}, 1000);
 	})
 
+	// Scope camera  To ASIA
 	document.getElementById('globefilters').getElementsByClassName('as')[0].addEventListener('click', (e) => {
 		globe.pointOfView({
 			lat: 15,
@@ -147,6 +162,7 @@ async function createGlobe() {
 		}, 1000);
 	})
 
+	// Scope camera  To AFRICA
 	document.getElementById('globefilters').getElementsByClassName('af')[0].addEventListener('click', (e) => {
 		globe.pointOfView({
 			lat: 0,
@@ -163,18 +179,10 @@ async function createGlobe() {
 
 createGlobe();
 
-function cleanAll() {
-	const markers = document.querySelectorAll('*');
-	markers.forEach((element) => {
-		element.classList.remove('current-marker');
-		element.classList.remove('is-open');
-		element.classList.remove('highzindx');
-	})
-}
-
+// Handle resize
 function onWindowResize() {
   container = document.getElementById('globe-section').getElementsByClassName('scene-container')[0];  
   container.style.width = window.innerWidth;
   container.style.height = window.innerHeight;
-  //createGlobe();
+  createGlobe();
 }
