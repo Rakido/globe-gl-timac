@@ -42,10 +42,5 @@
     { "name": "TIMAC AGRO China", "lat" : 36.066406, "lng" : 120.342406, "units": 0, "contact" : "", "website" : "", "img" : "" },
     { "name": "TIMAC AGRO Sverige", "lat" : 55.6106197, "lng" : 13.044048, "units": 0, "contact" : "ekonomi@timac.se", "website" : "https://se.timacagro.com/", "img" : "https://picsum.photos/150/100" },
     { "name": "TIMAC AGRO India", "lat" : 13.2003583, "lng" : 79.7302393, "units": 0, "contact" : "contact@in.timacagro.com", "website" : "https://in.timacagro.com/", "img" : "https://picsum.photos/150/100" }
-
-
-
-
-    
   ]
 }

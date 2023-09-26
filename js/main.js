@@ -118,7 +118,6 @@ async function createGlobe() {
 	}
 
   // setup globe controls
-	globe.controls().autoRotate = true;
 	globe.controls().minPolarAngle = 1;
 	globe.controls().maxPolarAngle = 2;
 	globe.controls().enableZoom = false;
