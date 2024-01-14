@@ -26,8 +26,9 @@ async function createGlobe() {
 	const data = await res.json();
 
 	// Initialize the Globe
-	const globe = new Globe({
-			antialias: true
+	const globe = Globe({
+			antialias: false,
+			precision: 'lowp'
 		})
 		.globeImageUrl('img/mapworld.jpg')
 		.htmlElementsData(data.cities)
@@ -38,7 +39,7 @@ async function createGlobe() {
 			return card;
 		})
 		(document.getElementById('globe-section'));
-
+		
 	// Function to create a card for a city
 	const createCard = (city, markerSvg) => {
 		const card = document.createElement("div");
@@ -64,6 +65,7 @@ async function createGlobe() {
 		const cardImage = document.createElement("img");
 		cardImage.className = "card-image";
 		cardImage.src = city.img;
+		cardImage.loading = 'lazy';
 		card.appendChild(cardImage);
 
 		// Create card body
@@ -123,6 +125,10 @@ async function createGlobe() {
 	globe.controls().enableZoom = false;
 	globe.controls().autoRotate = false;
 
+	globe.renderer().setPixelRatio(window.devicePixelRatio * 0.6)
+	globe.renderer().antialias = true
+	
+
 	if ("ontouchstart" in document.documentElement){
 			globe.controls().autoRotate = false;
 	}
@@ -170,17 +176,31 @@ async function createGlobe() {
 		}, 1000);
 	})
 
-  window.addEventListener('resize', () => {
-    onWindowResize();
-  }, false);
-  
+  //window.addEventListener('resize', debounce(onWindowResize, 250), false); 
+	window.addEventListener('resize', onWindowResize, 250, false); 
 }
 
 createGlobe();
 
+// Optimize responsive CPU
+function debounce(func, wait, immediate) {
+	let timeout;
+	return function() {
+			const context = this, args = arguments;
+			const later = function() {
+					timeout = null;
+					if (!immediate) func.apply(context, args);
+			};
+			const callNow = immediate && !timeout;
+			clearTimeout(timeout);
+			timeout = setTimeout(later, wait);
+			if (callNow) func.apply(context, args);
+	};
+}
+
 // Handle resize
 function onWindowResize() {
-  container = document.getElementById('globe-section').getElementsByClassName('scene-container')[0];  
+	const container = document.getElementById('globe-section').getElementsByClassName('scene-container')[0];
   container.style.width = window.innerWidth;
   container.style.height = window.innerHeight;
   createGlobe();
